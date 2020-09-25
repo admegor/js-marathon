@@ -3,32 +3,23 @@
 const firstRow = 'мама мыла раму';
 const secondRow = 'собака друг человека';
 
-let firstRowCounter = 0;
-let secondRowCounter = 0;
+let elementCounter = 0;
 
-function getRow(firstRow, secondRow) {
-
-    for (let i = 0; i < firstRow.length; i++ ) {
-        if (firstRow.charAt(i) == 'а') {
-            firstRowCounter += 1;
+function iteratorFunc(elementCounter) {
+    let count = 0;
+    for (let i = 0; i < elementCounter.length; i++) {
+        if (elementCounter.charAt(i) === 'а') {
+            count++;
         }
     }
-
-    for (let i = 0; i < secondRow.length; i++ ) {
-        if (secondRow.charAt(i) == 'а') {
-            secondRowCounter += 1;
-        }
-    }
-
-    if (firstRowCounter > secondRowCounter) {
-        return firstRow; 
-    }
-        else {
-            return secondRow;
-        }
+    return count;
 }
-        
-console.log(getRow(firstRow, secondRow)); 
+
+if (iteratorFunc(firstRow) > iteratorFunc(secondRow)) {
+    console.log(firstRow);
+} else {
+    console.log(secondRow);    
+}
 
 // Задача №2 (рабочая под *)
 
