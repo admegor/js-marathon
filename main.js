@@ -66,21 +66,12 @@ function renderProgressbarHP() {
     elProgressbar.style.width = (damageHP / defaultHP) * 100 + '%';
 }
 
-function animateDamage(count) {
-    console.log(count);
-    const $damageItem = document.querySelector('#damage');
-    const $pd = document.createElement('p');
-
-    $pd.innerText = `${count.character}`;
-    $damageItem.appendChild($pd);
-}
-
 function createLog(log) {
         const $logs = document.querySelector('#log');
         const $p = document.createElement('p');
 
         $p.innerText = `${log}`;
-        $logs.appendChild($p);
+        $logs.insertBefore($p, $logs.children[0]);
 }
 
 function changeHP(count) {
@@ -88,8 +79,6 @@ function changeHP(count) {
 
     const log = this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
     createLog(log);
-    const damage = this === enemy ? animateDamage(this, character, count) : animateDamage(this, enemy, count);
-    animateDamage(damage);
 
     if (this.damageHP <= 0) {
     this.damageHP = 0;
