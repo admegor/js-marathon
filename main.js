@@ -4,6 +4,7 @@ function $getElByID(id) {
 
 const $btn = $getElByID('btn-kick');
 const $btnBat = $getElByID('btn-kick-bat');
+let clickCount = 1;
 
 const character = {
     name: 'Pikachu',
@@ -32,12 +33,39 @@ const enemy = {
 const { name, defaultHP, damageHP } = character;
 const { name: nameEnemy, defaultHP: defaultHPEnemy, damageHP: damageHPEnemy } = enemy;
 
+
+function clickCounter() {
+    console.log(clickCount);
+    clickCount += 1;
+}
+
+let manaCountBtnBat = 3;
+let manaCountBtnJolt = 8;
+
 $btnBat.addEventListener('click', function () {
     powerStroke(30);
+    clickCounter(clickCount);
+    manaCountBtnBat -= 1;
+
+    if (manaCountBtnBat <= 0) {
+        this.disabled = true;
+    }
+
+    this.innerText = `Thunder baseball bat ${manaCountBtnBat}/3`;
+    this.appendChild($span);
 })
 
 $btn.addEventListener('click', function () {
     powerStroke(20);
+    clickCounter(clickCount);
+    manaCountBtnJolt -= 1;
+
+    if (manaCountBtnJolt <= 0) {
+        this.disabled = true;
+    }
+
+    this.innerText = `Thunder Jolt ${manaCountBtnJolt}/8`;
+    this.appendChild($span);
 })
 
 function powerStroke(count) {
