@@ -474,3 +474,44 @@ h1 {
 .action label {
     padding: 6px 0;
 }
+
+.log__wrap {
+    background-color: #B7DAF8;
+    border-radius: 20px;
+    width: 1020px;
+    height: 220px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#log {
+    width: 1000px;
+    background-color: #B7DAF8;
+    border: 2px solid white;
+    border-radius: 20px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+#log p:nth-child(2n) {
+    border-bottom: 2px solid white;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#damage p {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #00a3e2;
+    right: 0;
+    top: 0;
+    transition: all 1s;
+    transform: translateY(10px);
+}
