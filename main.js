@@ -1,3 +1,20 @@
+import pokemon from "./pokemon.js"
+import random from "./random.js";
+
+const player1 = new pokemon({
+    name: 'Pikachu',
+    defaultHP: 200,
+    damageHP: 200,
+    Selectors: 'character',
+});
+
+const player2 = new pokemon({
+    name: 'Charmander',
+    defaultHP: 100,
+    damageHP: 100,
+    Selectors: 'enemy',
+});
+
 function $getElByID(id) {
     return document.getElementById(id);
 }
@@ -6,56 +23,20 @@ const $btn = $getElByID('btn-kick');
 const $btnBat = $getElByID('btn-kick-bat');
 let clickCount = 1;
 
-const character = {
-    name: 'Pikachu',
-    defaultHP: 200,
-    damageHP: 200,
-    elHP: $getElByID('health-character'),
-    elProgressbar: $getElByID('progressbar-character'),
-    renderHPLife,
-    renderProgressbarHP,
-    renderHP,
-    changeHP,
-}
-
-const enemy = {
-    name: 'Charmander',
-    defaultHP: 100,
-    damageHP: 100,
-    elHP: $getElByID('health-enemy'),
-    elProgressbar: $getElByID('progressbar-enemy'),
-    renderHPLife,
-    renderProgressbarHP,
-    renderHP,
-    changeHP,
-}
-
-const { name, defaultHP, damageHP } = character;
-const { name: nameEnemy, defaultHP: defaultHPEnemy, damageHP: damageHPEnemy } = enemy;
-
-
 function clickCounter() {
-    console.log(clickCount);
     clickCount += 1;
 }
 
 let manaCountBtnBat = 3;
 let manaCountBtnJolt = 8;
 
-$btnBat.addEventListener('click', function () {
-    powerStroke(30);
-    clickCounter(clickCount);
-    manaCountBtnBat -= 1;
-
-    if (manaCountBtnBat <= 0) {
-        this.disabled = true;
-    }
-
-    this.innerText = `Thunder baseball bat ${manaCountBtnBat}/3`;
-    this.appendChild($span);
-})
-
 $btn.addEventListener('click', function () {
+    player1.changeHP(random(30), function(count) {
+        createLog(generateLog(player1, player2, count));
+    });
+    player2.changeHP(random(30), function(count) {
+        createLog(generateLog(player1, player2, count));
+    });
     powerStroke(20);
     clickCounter(clickCount);
     manaCountBtnJolt -= 1;
@@ -65,33 +46,27 @@ $btn.addEventListener('click', function () {
     }
 
     this.innerText = `Thunder Jolt ${manaCountBtnJolt}/8`;
-    this.appendChild($span);
+})
+
+$btnBat.addEventListener('click', function () {
+    player1.changeHP(random(30), function(count) {
+        createLog(generateLog(player1, player2, count));
+    });
+    player2.changeHP(random(30), function(count) {
+        createLog(generateLog(player1, player2, count));
+    });
+    powerStroke(30);
+    clickCounter(clickCount);
+    manaCountBtnBat -= 1;
+
+    if (manaCountBtnBat <= 0) {
+        this.disabled = true;
+    }
+
+    this.innerText = `Thunder baseball bat ${manaCountBtnBat}/3`;
 })
 
 function powerStroke(count) {
-    character.changeHP(random(count));
-    enemy.changeHP(random(count));
-}
-
-function init() {
-    console.log('Start Game!');
-    character.renderHP();
-    enemy.renderHP();
-}
-
-function renderHP() {
-    this.renderHPLife();
-    this.renderProgressbarHP();
-}
-
-function renderHPLife() {
-    const { elHP, damageHP, defaultHP} = this;
-    elHP.innerText = damageHP + ' / ' + defaultHP;
-}
-
-function renderProgressbarHP() {
-    const { elProgressbar, damageHP, defaultHP } = this;
-    elProgressbar.style.width = (damageHP / defaultHP) * 100 + '%';
 }
 
 function createLog(log) {
@@ -101,27 +76,6 @@ function createLog(log) {
         $p.innerText = `${log}`;
         $logs.insertBefore($p, $logs.children[0]);
 }
-
-function changeHP(count) {
-    this.damageHP -= count;
-
-    const log = this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
-    createLog(log);
-
-    if (this.damageHP <= 0) {
-    this.damageHP = 0;
-        alert('Бедный '+ this.name + ' проиграл бой!');
-        $btn.disabled = true;
-        $btnBat.disabled = true;
-    }
-
-    this.renderHP();
-}
-
-function random(num) {
-    return Math.ceil(Math.random() * num)
-}
-
 
 function generateLog(firstPerson, secondPerson, count) {
     const logs = [
@@ -139,5 +93,3 @@ function generateLog(firstPerson, secondPerson, count) {
 
     return logs[random(logs.length) - 1];
 }
-
-init();
