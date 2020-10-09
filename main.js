@@ -1,18 +1,40 @@
 import pokemon from "./pokemon.js"
 import random from "./random.js";
+import { pokemons } from "./pokemons.js";
+
+const pikachu = pokemons.find(item => item.name === 'Pikachu');
+console.log('pikachu: ', pikachu);
 
 const player1 = new pokemon({
+    ...pikachu,
     name: 'Pikachu',
     defaultHP: 200,
     damageHP: 200,
-    Selectors: 'character',
+    Selectors: 'player1',
 });
 
+console.log('player1: ', player1);
 const player2 = new pokemon({
     name: 'Charmander',
     defaultHP: 100,
     damageHP: 100,
-    Selectors: 'enemy',
+    Selectors: 'player2',
+});
+
+const $control = document.querySelector('.control');
+
+player1.attacks.forEach(item => {
+    console.log(item);
+    const $btn = document.createElement('button');
+    $btn.classList.add('button');
+    $btn.innerText = item.name;
+    // const btnCount = countBtn(item.maxCount, $btn);
+    $btn.addEventListener('click', () => {
+        console.log('Click button ', $btn.innerText);
+        // $btnCount();
+    })
+    $control.appendChild($btn);
+
 });
 
 function $getElByID(id) {
@@ -29,6 +51,16 @@ function clickCounter() {
 
 let manaCountBtnBat = 3;
 let manaCountBtnJolt = 8;
+const btnCountJolt = countBtn();
+
+function countBtn(count = 6) {
+    return function () {
+        count --;
+        return count;
+    }
+}
+
+$btn.innerText = `Thunder Jolt ${manaCountBtnJolt}`;
 
 $btn.addEventListener('click', function () {
     player1.changeHP(random(30), function(count) {
@@ -37,7 +69,9 @@ $btn.addEventListener('click', function () {
     player2.changeHP(random(30), function(count) {
         createLog(generateLog(player1, player2, count));
     });
-    powerStroke(20);
+    btnCountJolt
+    console.log(btnCountJolt());
+    
     clickCounter(clickCount);
     manaCountBtnJolt -= 1;
 
@@ -45,9 +79,10 @@ $btn.addEventListener('click', function () {
         this.disabled = true;
     }
 
-    this.innerText = `Thunder Jolt ${manaCountBtnJolt}/8`;
+    this.innerText = `Thunder Jolt ${manaCountBtnJolt}`;
 })
 
+$btnBat.innerText = `Thunder baseball bat ${manaCountBtnBat}`;
 $btnBat.addEventListener('click', function () {
     player1.changeHP(random(30), function(count) {
         createLog(generateLog(player1, player2, count));
@@ -55,7 +90,8 @@ $btnBat.addEventListener('click', function () {
     player2.changeHP(random(30), function(count) {
         createLog(generateLog(player1, player2, count));
     });
-    powerStroke(30);
+    counterHits();
+    console.log(hit);
     clickCounter(clickCount);
     manaCountBtnBat -= 1;
 
@@ -63,11 +99,8 @@ $btnBat.addEventListener('click', function () {
         this.disabled = true;
     }
 
-    this.innerText = `Thunder baseball bat ${manaCountBtnBat}/3`;
+    this.innerText = `Thunder baseball bat ${manaCountBtnBat}`;
 })
-
-function powerStroke(count) {
-}
 
 function createLog(log) {
         const $logs = document.querySelector('#log');
